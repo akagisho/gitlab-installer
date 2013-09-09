@@ -63,7 +63,7 @@ cd /home/git
 if [ ! -d gitlab-shell ]; then
     sudo -H -u git -H git clone https://github.com/gitlabhq/gitlab-shell.git
     cd gitlab-shell
-    sudo -H -u git -H git checkout v1.7.0
+    sudo -H -u git -H git checkout v1.7.1
     sudo -H -u git -H cp -v config.yml.example config.yml
     sed -i 's#^gitlab_url: "http://localhost/"$#gitlab_url: "http://127.0.0.1/"#' /home/git/gitlab-shell/config.yml
     sudo -H -u git -H ./bin/install
