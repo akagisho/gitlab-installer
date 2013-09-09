@@ -96,7 +96,6 @@ if [ ! -d gitlab ]; then
     sudo -H -u git git checkout 6-0-stable
  
     sudo -H -u git cp -v config/gitlab.yml.example config/gitlab.yml
-    sudo -H -u git cp -v config/puma.rb.example config/puma.rb
     sudo -H -u git cp -v config/unicorn.rb.example config/unicorn.rb
  
     sed -i "s/host: localhost/host: $HOSTNAME/" config/gitlab.yml
