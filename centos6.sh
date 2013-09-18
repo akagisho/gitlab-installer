@@ -94,7 +94,7 @@ cd /home/git
 if [ ! -d gitlab-shell ]; then
     sudo -u git git clone https://github.com/gitlabhq/gitlab-shell.git
     cd gitlab-shell
-    sudo -u git git checkout v1.5.0
+    sudo -u git git checkout v1.7.1
     sudo -u git cp -v /home/git/gitlab-shell/config.yml.example /home/git/gitlab-shell/config.yml
     sed -i 's#^gitlab_url: "http://localhost/"$#gitlab_url: "http://127.0.0.1/"#' /home/git/gitlab-shell/config.yml
     sudo -u git ./bin/install
@@ -128,10 +128,10 @@ cd /home/git
 if [ ! -d gitlab ]; then
     sudo -u git git clone https://github.com/gitlabhq/gitlabhq.git gitlab
     cd gitlab
-    sudo -u git git checkout v5.3.0
+    sudo -u git git checkout 6-0-stable
 
     sudo -u git cp -v config/gitlab.yml.example config/gitlab.yml
-    sudo -u git cp -v config/puma.rb.example config/puma.rb
+    sudo -u git cp -v config/unicorn.rb.example config/unicorn.rb
 
     sed -i "s/host: localhost/host: $HOSTNAME/" config/gitlab.yml
     sed -i "s/email_from: gitlab@localhost/email_from: gitlab@$HOSTNAME/" config/gitlab.yml
@@ -162,7 +162,7 @@ if [ ! -d gitlab ]; then
     sudo -u git bundle install --deployment --without development test postgres || exit 1
 fi
 
-curl -o /etc/init.d/gitlab https://raw.github.com/gitlabhq/gitlab-recipes/master/init/sysvinit/centos/gitlab-puma || exit 1
+curl -o /etc/init.d/gitlab https://raw.github.com/gitlabhq/gitlab-recipes/master/init/sysvinit/centos/gitlab-unicorn || exit 1
 sed -i "s/NAME=git/NAME=gitlab/" /etc/init.d/gitlab
 chmod +x /etc/init.d/gitlab
 /etc/init.d/gitlab start || exit 1
