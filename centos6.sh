@@ -115,7 +115,7 @@ chkconfig mysqld on
 
 mysql -u root -e "CREATE USER 'gitlab'@'localhost' IDENTIFIED BY '$MYSQL_PASSWORD';"
 mysql -u root -e 'CREATE DATABASE IF NOT EXISTS `gitlabhq_production` DEFAULT CHARACTER SET `utf8` COLLATE `utf8_unicode_ci`;'
-mysql -u root -e "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER ON \`gitlabhq_production\`.* TO 'gitlab'@'localhost';"
+mysql -u root -e "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, INDEX, ALTER, LOCK TABLES ON \`gitlabhq_production\`.* TO 'gitlab'@'localhost';"
 
 yum -y --enablerepo=epel install redis
 /etc/init.d/redis start || exit 1
