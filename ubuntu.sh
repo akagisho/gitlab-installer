@@ -17,7 +17,7 @@ HOSTNAME=$(hostname)
 apt-get update
 apt-get upgrade -y
 
-apt-get install -y build-essential zlib1g-dev libyaml-dev libssl-dev libgdbm-dev libreadline-dev libncurses5-dev libffi-dev curl git-core openssh-server redis-server checkinstall libxml2-dev libxslt-dev libcurl4-openssl-dev libicu-dev expect
+apt-get install -y build-essential zlib1g-dev libyaml-dev libssl-dev libgdbm-dev libreadline-dev libncurses5-dev libffi-dev curl git-core openssh-server redis-server checkinstall libxml2-dev libxslt-dev libcurl4-openssl-dev libicu-dev logrotate expect
 
 cat <<__EOT__ | debconf-set-selections
 postfix postfix/root_address    string
@@ -63,7 +63,7 @@ cd /home/git
 if [ ! -d gitlab-shell ]; then
     sudo -H -u git -H git clone https://github.com/gitlabhq/gitlab-shell.git
     cd gitlab-shell
-    sudo -H -u git -H git checkout v1.7.1
+    sudo -H -u git -H git checkout v1.7.4
     sudo -H -u git -H cp -v config.yml.example config.yml
     sed -i 's#^gitlab_url: "http://localhost/"$#gitlab_url: "http://127.0.0.1/"#' /home/git/gitlab-shell/config.yml
     sudo -H -u git -H ./bin/install
@@ -93,11 +93,13 @@ cd /home/git
 if [ ! -d gitlab ]; then
     sudo -H -u git git clone https://github.com/gitlabhq/gitlabhq.git gitlab
     cd gitlab
-    sudo -H -u git git checkout 6-0-stable
+    sudo -H -u git git checkout 6-2-stable
  
     sudo -H -u git cp -v config/gitlab.yml.example config/gitlab.yml
     sudo -H -u git cp -v config/unicorn.rb.example config/unicorn.rb
- 
+    sudo -H -u git cp -v config/initializers/rack_attack.rb.example config/initializers/rack_attack.rb
+
+    sed -i 's/# \(config.middleware.use Rack::Attack\)/\1/' config/application.rb
     sed -i "s/host: localhost/host: $HOSTNAME/" config/gitlab.yml
     sed -i "s/email_from: gitlab@localhost/email_from: gitlab@$HOSTNAME/" config/gitlab.yml
  
@@ -127,6 +129,7 @@ if [ ! -d gitlab ]; then
 fi
 
 cd /home/git/gitlab
+cp -v lib/support/logrotate/gitlab /etc/logrotate.d/gitlab
 cp -v lib/support/init.d/gitlab /etc/init.d/gitlab
 chmod +x /etc/init.d/gitlab
 /etc/init.d/gitlab start
