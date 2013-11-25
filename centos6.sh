@@ -162,7 +162,7 @@ if [ ! -d gitlab ]; then
     sudo -u git bundle install --deployment --without development test postgres || exit 1
 fi
 
-curl -o /etc/init.d/gitlab https://raw.github.com/gitlabhq/gitlab-recipes/master/init/sysvinit/centos/gitlab-unicorn || exit 1
+curl -o /etc/init.d/gitlab https://raw.github.com/gitlabhq/gitlab-recipes/d874d1c4737bfa72b7ea8e773a657f3d85af589c/init/sysvinit/centos/gitlab-unicorn || exit 1
 sed -i "s/NAME=git/NAME=gitlab/" /etc/init.d/gitlab
 chmod +x /etc/init.d/gitlab
 /etc/init.d/gitlab start || exit 1
