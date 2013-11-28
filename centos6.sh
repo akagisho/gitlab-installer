@@ -52,7 +52,7 @@ fi
 
 if [ ! -x /usr/bin/gem ]; then
     cd /usr/local/src
-    curl -OL http://rubyforge.org/frs/download.php/76729/rubygems-1.8.25.tgz || exit 1
+    curl -OL http://production.cf.rubygems.org/rubygems/rubygems-1.8.25.tgz || exit 1
     tar xvzf rubygems-1.8.25.tgz
     cd rubygems-1.8.25
     ruby setup.rb || exit 1
