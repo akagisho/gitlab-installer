@@ -41,9 +41,9 @@ yum -y --enablerepo=rpmforge-extras install git
 #
 if [ ! -x /usr/bin/ruby ]; then
     cd /usr/local/src
-    curl -O http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p429.tar.gz || exit 1
-    tar xvzf ruby-1.9.3-p429.tar.gz
-    cd ruby-1.9.3-p429
+    curl -O http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p484.tar.gz || exit 1
+    tar xvzf ruby-1.9.3-p484.tar.gz
+    cd ruby-1.9.3-p484
     ./configure || exit 1
     make || exit 1
     make install || exit 1
