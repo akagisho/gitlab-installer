@@ -49,7 +49,6 @@ apt-get install -y ruby1.9.3 ruby-dev rubygems
 apt-get remove -y ruby1.8
 
 gem install bundler --no-ri --no-rdoc || exit 1
-gem install charlock_holmes --version "0.6.9.4" || exit 1
 
 #
 # 3. System Users

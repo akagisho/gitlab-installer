@@ -158,7 +158,6 @@ if [ ! -d gitlab ]; then
     sed -i "s/username: root/username: gitlab/" config/database.yml
 
     cd /home/git/gitlab
-    gem install charlock_holmes --version "0.6.9.4" || exit 1
     sudo -u git bundle install --deployment --without development test postgres || exit 1
 fi
 
