@@ -26,7 +26,7 @@ rpm -ivh epel-release-6-8.noarch.rpm
 sed -i "s/enabled=1/enabled=0/" /etc/yum.repos.d/epel.repo
 
 yum -y groupinstall "development tools"
-yum -y --enablerepo=epel install zlib-devel openssl-devel gdbm-devel readline-devel ncurses-devel libffi-devel libxml2-devel libxslt-devel libcurl-devel libicu-devel libyaml-devel expect
+yum -y --enablerepo=epel install zlib-devel openssl-devel gdbm-devel readline-devel ncurses-devel libffi-devel libxml2-devel libxslt-devel libcurl-devel libicu-devel libyaml-devel logrotate expect
 
 if [ ! -f rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm ]; then
     curl -OL http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm || exit 1
@@ -94,7 +94,7 @@ cd /home/git
 if [ ! -d gitlab-shell ]; then
     sudo -u git git clone https://github.com/gitlabhq/gitlab-shell.git
     cd gitlab-shell
-    sudo -u git git checkout v1.7.1
+    sudo -u git git checkout v1.7.9
     sudo -u git cp -v /home/git/gitlab-shell/config.yml.example /home/git/gitlab-shell/config.yml
     sed -i 's#^gitlab_url: "http://localhost/"$#gitlab_url: "http://127.0.0.1/"#' /home/git/gitlab-shell/config.yml
     sudo -u git ./bin/install
@@ -128,10 +128,11 @@ cd /home/git
 if [ ! -d gitlab ]; then
     sudo -u git git clone https://github.com/gitlabhq/gitlabhq.git gitlab
     cd gitlab
-    sudo -u git git checkout 6-0-stable
+    sudo -u git git checkout 6-2-stable
 
     sudo -u git cp -v config/gitlab.yml.example config/gitlab.yml
     sudo -u git cp -v config/unicorn.rb.example config/unicorn.rb
+    sudo -u git cp -v config/rack_attack.rb.example config/rack_attack.rb
 
     sed -i "s/host: localhost/host: $HOSTNAME/" config/gitlab.yml
     sed -i "s/email_from: gitlab@localhost/email_from: gitlab@$HOSTNAME/" config/gitlab.yml
@@ -161,11 +162,13 @@ if [ ! -d gitlab ]; then
     sudo -u git bundle install --deployment --without development test postgres || exit 1
 fi
 
-curl -o /etc/init.d/gitlab https://raw.github.com/gitlabhq/gitlab-recipes/d874d1c4737bfa72b7ea8e773a657f3d85af589c/init/sysvinit/centos/gitlab-unicorn || exit 1
+cp -v /home/git/gitlab/lib/support/init.d/gitlab /etc/init.d/gitlab
 sed -i "s/NAME=git/NAME=gitlab/" /etc/init.d/gitlab
 chmod +x /etc/init.d/gitlab
 /etc/init.d/gitlab start || exit 1
 chkconfig gitlab on
+
+cp -v /home/git/gitlab/lib/support/logrotate/gitlab /etc/logrotate.d/gitlab
 
 #
 # 7. Nginx
