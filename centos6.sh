@@ -43,9 +43,9 @@ yum -y --enablerepo=rpmforge-extras install git
 #
 if [ ! -x /usr/bin/ruby ]; then
     cd /usr/local/src
-    curl -O http://ftp.ruby-lang.org/pub/ruby/1.9/ruby-1.9.3-p484.tar.gz || exit 1
-    tar xvzf ruby-1.9.3-p484.tar.gz
-    cd ruby-1.9.3-p484
+    curl -O http://ftp.ruby-lang.org/pub/ruby/ruby-2.0.0-p353.tar.gz || exit 1
+    tar xvzf ruby-2.0.0-p353.tar.gz
+    cd ruby-2.0.0-p353
     ./configure || exit 1
     make || exit 1
     make install || exit 1
@@ -54,9 +54,9 @@ fi
 
 if [ ! -x /usr/bin/gem ]; then
     cd /usr/local/src
-    curl -OL http://production.cf.rubygems.org/rubygems/rubygems-1.8.25.tgz || exit 1
-    tar xvzf rubygems-1.8.25.tgz
-    cd rubygems-1.8.25
+    curl -OL http://production.cf.rubygems.org/rubygems/rubygems-2.1.11.tgz || exit 1
+    tar xvzf rubygems-2.1.11.tgz
+    cd rubygems-2.1.11
     ruby setup.rb || exit 1
     ln -sv /usr/local/bin/gem /usr/bin
 fi
@@ -96,7 +96,7 @@ cd /home/git
 if [ ! -d gitlab-shell ]; then
     sudo -u git git clone https://github.com/gitlabhq/gitlab-shell.git
     cd gitlab-shell
-    sudo -u git git checkout v1.7.9
+    sudo -u git git checkout v1.8.0
     sudo -u git cp -v /home/git/gitlab-shell/config.yml.example /home/git/gitlab-shell/config.yml
     sed -i 's#^gitlab_url: "http://localhost/"$#gitlab_url: "http://127.0.0.1/"#' /home/git/gitlab-shell/config.yml
     sudo -u git ./bin/install
@@ -130,11 +130,11 @@ cd /home/git
 if [ ! -d gitlab ]; then
     sudo -u git git clone https://github.com/gitlabhq/gitlabhq.git gitlab
     cd gitlab
-    sudo -u git git checkout 6-2-stable
+    sudo -u git git checkout 6-5-stable
 
     sudo -u git cp -v config/gitlab.yml.example config/gitlab.yml
     sudo -u git cp -v config/unicorn.rb.example config/unicorn.rb
-    sudo -u git cp -v config/rack_attack.rb.example config/rack_attack.rb
+    sudo -u git cp -v config/initializers/rack_attack.rb.example config/initializers/rack_attack.rb
 
     sed -i "s/host: localhost/host: $HOSTNAME/" config/gitlab.yml
     sed -i "s/email_from: gitlab@localhost/email_from: gitlab@$HOSTNAME/" config/gitlab.yml
@@ -158,7 +158,7 @@ if [ ! -d gitlab ]; then
 
     sudo -u git cp -v config/database.yml.mysql config/database.yml
     sed -i "s/\"secure password\"/\"$MYSQL_PASSWORD\"/" config/database.yml
-    sed -i "s/username: root/username: gitlab/" config/database.yml
+    sed -i 's/^username: .*$/username: gitlab/' config/database.yml
 
     cd /home/git/gitlab
     sudo -u git bundle install --deployment --without development test postgres || exit 1

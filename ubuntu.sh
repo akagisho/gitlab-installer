@@ -64,7 +64,7 @@ cd /home/git
 if [ ! -d gitlab-shell ]; then
     sudo -H -u git -H git clone https://github.com/gitlabhq/gitlab-shell.git
     cd gitlab-shell
-    sudo -H -u git -H git checkout v1.7.4
+    sudo -H -u git -H git checkout v1.8.0
     sudo -H -u git -H cp -v config.yml.example config.yml
     sed -i 's#^gitlab_url: "http://localhost/"$#gitlab_url: "http://127.0.0.1/"#' /home/git/gitlab-shell/config.yml
     sudo -H -u git -H ./bin/install
@@ -94,7 +94,7 @@ cd /home/git
 if [ ! -d gitlab ]; then
     sudo -H -u git git clone https://github.com/gitlabhq/gitlabhq.git gitlab
     cd gitlab
-    sudo -H -u git git checkout 6-2-stable
+    sudo -H -u git git checkout 6-5-stable
  
     sudo -H -u git cp -v config/gitlab.yml.example config/gitlab.yml
     sudo -H -u git cp -v config/unicorn.rb.example config/unicorn.rb
@@ -123,7 +123,7 @@ if [ ! -d gitlab ]; then
  
     sudo -H -u git cp -v config/database.yml.mysql config/database.yml
     sed -i "s/\"secure password\"/\"$MYSQL_PASSWORD\"/" config/database.yml
-    sed -i "s/username: root/username: gitlab/" config/database.yml
+    sed -i 's/^username: .*$/username: gitlab/' config/database.yml
  
     cd /home/git/gitlab
     sudo -H -u git bundle install --deployment --without development test postgres || exit 1
