@@ -146,6 +146,7 @@ sed -i "s/server_name YOUR_SERVER_FQDN/server_name ~.*/" /etc/nginx/sites-availa
 update-rc.d gitlab defaults 21
 
 cd /home/git/gitlab
+sudo -u git bundle exec rake assets:precompile RAILS_ENV=production
 expect -c "
 set timeout -1
 spawn sudo -H -u git bundle exec rake gitlab:setup RAILS_ENV=production

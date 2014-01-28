@@ -192,6 +192,7 @@ chkconfig nginx on
 chkconfig iptables off
 
 cd /home/git/gitlab
+sudo -u git bundle exec rake assets:precompile RAILS_ENV=production
 expect -c "
 set timeout -1
 spawn sudo -u git bundle exec rake gitlab:setup RAILS_ENV=production
