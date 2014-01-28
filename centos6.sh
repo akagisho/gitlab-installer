@@ -11,6 +11,8 @@ fi
 
 HOSTNAME=$(hostname)
 
+set -x
+
 #
 # 1. Packages / Dependencies
 #
