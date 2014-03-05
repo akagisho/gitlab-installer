@@ -123,7 +123,7 @@ if [ ! -d gitlab ]; then
  
     sudo -H -u git cp -v config/database.yml.mysql config/database.yml
     sed -i "s/\"secure password\"/\"$MYSQL_PASSWORD\"/" config/database.yml
-    sed -i 's/^username: .*$/username: gitlab/' config/database.yml
+    sed -i 's/^\(\s*\)username: .*$/\1username: gitlab/' config/database.yml
  
     cd /home/git/gitlab
     sudo -H -u git bundle install --deployment --without development test postgres || exit 1
