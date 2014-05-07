@@ -14,12 +14,12 @@ Run script.
 
 Ubuntu 12.04 or later:
 
-    $ curl https://raw.github.com/akagisho/gitlab-installer/master/ubuntu.sh \
+    $ curl https://raw.githubusercontent.com/akagisho/gitlab-installer/master/ubuntu.sh \
         | sudo bash 2>&1 | tee gitlab-installer.log
 
 CentOS 6.X:
 
-    $ curl https://raw.github.com/akagisho/gitlab-installer/master/centos6.sh \
+    $ curl https://raw.githubusercontent.com/akagisho/gitlab-installer/master/centos6.sh \
         | sudo bash 2>&1 | tee gitlab-installer.log
 
 Help
