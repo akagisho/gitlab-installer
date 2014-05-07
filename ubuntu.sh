@@ -19,6 +19,7 @@ set -x
 apt-get update
 apt-get upgrade -y
 
+apt-get install -y libssl1.0.0=1.0.1-4ubuntu3 --force-yes
 apt-get install -y build-essential zlib1g-dev libyaml-dev libssl-dev libgdbm-dev libreadline-dev libncurses5-dev libffi-dev curl git-core openssh-server redis-server checkinstall libxml2-dev libxslt-dev libcurl4-openssl-dev libicu-dev logrotate expect
 
 cat <<__EOT__ | debconf-set-selections
@@ -95,6 +96,10 @@ if [ ! -d gitlab ]; then
     sudo -H -u git git clone https://github.com/gitlabhq/gitlabhq.git gitlab
     cd gitlab
     sudo -H -u git git checkout 6-5-stable
+
+    sed -i 's/gem "modernizr",        "2.6.2"/gem "modernizr-rails",        "2.7.1"/' Gemfile
+    sed -i 's/modernizr (2.6.2)/modernizr-rails (2.7.1)/' Gemfile.lock
+    sed -i 's/modernizr (= 2.6.2)/modernizr-rails (= 2.7.1)/' Gemfile.lock
  
     sudo -H -u git cp -v config/gitlab.yml.example config/gitlab.yml
     sudo -H -u git cp -v config/unicorn.rb.example config/unicorn.rb
